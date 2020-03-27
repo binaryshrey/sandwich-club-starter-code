@@ -3,7 +3,9 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -11,6 +13,14 @@ import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
 
 public class DetailActivity extends AppCompatActivity {
+
+    //defining the variables
+    private ImageView mSandwichImageView;
+    private TextView mAlsoKnowAsTextView;
+    private TextView mOriginTextView;
+    private TextView mIngredientTextView;
+    private TextView mDescriptionTextView;
+    private Sandwich mSandwich;
 
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
@@ -20,7 +30,12 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        ImageView ingredientsIv = findViewById(R.id.image_iv);
+        //initializing
+        mSandwichImageView = (ImageView)findViewById(R.id.image_iv);
+        mAlsoKnowAsTextView = (TextView)findViewById(R.id.also_known_tv);
+        mOriginTextView = (TextView)findViewById(R.id.origin_tv);
+        mIngredientTextView = (TextView)findViewById(R.id.ingredients_tv);
+        mDescriptionTextView = (TextView)findViewById(R.id.description_tv);
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -35,20 +50,17 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         String[] sandwiches = getResources().getStringArray(R.array.sandwich_details);
+        //storing the value of clicked item and passing it as json to parseSandwichJson()
         String json = sandwiches[position];
-        Sandwich sandwich = JsonUtils.parseSandwichJson(json);
-        if (sandwich == null) {
+        mSandwich = JsonUtils.parseSandwichJson(json);
+        if (mSandwich == null) {
             // Sandwich data unavailable
             closeOnError();
             return;
         }
 
         populateUI();
-        Picasso.with(this)
-                .load(sandwich.getImage())
-                .into(ingredientsIv);
 
-        setTitle(sandwich.getMainName());
     }
 
     private void closeOnError() {
@@ -57,6 +69,17 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateUI() {
+        Picasso.with(this)
+                .load(mSandwich.getImage())
+                .into(mSandwichImageView);
+
+        //setting the title
+        setTitle(mSandwich.getMainName());
+        //setting the text using setText()
+        mAlsoKnowAsTextView.setText(TextUtils.join(", ", mSandwich.getAlsoKnownAs()));
+        mOriginTextView.setText(mSandwich.getPlaceOfOrigin());
+        mIngredientTextView.setText(TextUtils.join(", ", mSandwich.getIngredients()));
+        mDescriptionTextView.setText(mSandwich.getDescription());
 
     }
 }
