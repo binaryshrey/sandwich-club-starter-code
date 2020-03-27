@@ -12,6 +12,10 @@ public class JsonUtils {
 
     public static Sandwich parseSandwichJson(String json) {
 
+        // check whether input(json) is null or not
+        if (json == null || json.isEmpty()) {
+            return null;
+        }
         try{
             //creating an object
             Sandwich sandwichClub = new Sandwich();
