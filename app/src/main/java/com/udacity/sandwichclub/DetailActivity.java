@@ -14,7 +14,7 @@ import com.udacity.sandwichclub.utils.JsonUtils;
 
 public class DetailActivity extends AppCompatActivity {
 
-    //defining the variables
+    //defining the data members
     private ImageView mSandwichImageView;
     private TextView mAlsoKnowAsTextView;
     private TextView mOriginTextView;
@@ -30,7 +30,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        //initializing
+        //initializing data members
         mSandwichImageView = (ImageView)findViewById(R.id.image_iv);
         mAlsoKnowAsTextView = (TextView)findViewById(R.id.also_known_tv);
         mOriginTextView = (TextView)findViewById(R.id.origin_tv);
@@ -58,7 +58,7 @@ public class DetailActivity extends AppCompatActivity {
             closeOnError();
             return;
         }
-
+        //method to display text and image
         populateUI();
 
     }
@@ -69,6 +69,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateUI() {
+        //loading image into ImageView
         Picasso.with(this)
                 .load(mSandwich.getImage())
                 .into(mSandwichImageView);
